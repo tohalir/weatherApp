@@ -1,0 +1,11 @@
+<div class="tab__container">
+  <div class="tab__tabs">
+    <div class="tab__tab" [ngClass]="tab.id === activeTab ? 'tab__tab--active' : ''" *ngFor="let tab of _tabs" (click)="onSelectTab(tab.id)">
+      <ng-template [ngTemplateOutlet]="tabTemplate" [ngTemplateOutletContext]="{$implicit: tab}"></ng-template>
+      <button class="tab__tab-button" (click)="onRemoveTab(tab.id); $event.stopPropagation()">&times;</button>
+    </div>
+  </div>
+  <div class="tab__content" *ngIf="activeTab">
+    <ng-template [ngTemplateOutlet]="tabContent" [ngTemplateOutletContext]="{$implicit: activeTab}"></ng-template>
+  </div>
+</div>

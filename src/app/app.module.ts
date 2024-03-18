@@ -9,11 +9,8 @@ import { ForecastsListComponent } from './forecasts-list/forecasts-list.componen
 import {WeatherService} from "./weather.service";
 import { CurrentConditionsComponent } from './current-conditions/current-conditions.component';
 import { MainPageComponent } from './main-page/main-page.component';
-import {RouterModule} from "@angular/router";
-import {routing} from "./app.routing";
-import {HttpClientModule} from "@angular/common/http";
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { SharedModule } from './shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -25,11 +22,9 @@ import { environment } from '../environments/environment';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpClientModule,
     RouterModule,
-    routing,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    SharedModule,
+    FormsModule
   ],
   providers: [LocationService, WeatherService],
   bootstrap: [AppComponent]

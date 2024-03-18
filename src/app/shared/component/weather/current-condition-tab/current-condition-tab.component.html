@@ -1,0 +1,17 @@
+<div *ngIf="_activeLocation" class="flex well current-condition-tab__container">
+  <div>
+    <h4>Current conditions: {{_activeLocation.data.weather[0].main}}</h4>
+    <h4>Temperatures today:</h4>
+    <p>
+      Current {{_activeLocation.data.main.temp | number:'.0-0'}}
+      - Max {{_activeLocation.data.main.temp_max | number:'.0-0'}}
+      - Min {{_activeLocation.data.main.temp_min | number:'.0-0'}}
+    </p>
+    <p>
+      <a [routerLink]="['/forecast', _activeLocation.zip]" >Show 5-day forecast for {{_activeLocation.data.name}}</a>
+    </p>
+  </div>
+  <div>
+    <img [src]="_activeLocation.icon">
+  </div>
+</div>

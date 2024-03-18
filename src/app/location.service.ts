@@ -1,33 +1,40 @@
-import { Injectable } from '@angular/core';
-import {WeatherService} from "./weather.service";
+import { Injectable, Signal, signal } from '@angular/core';
+import { LocalStorageService } from './local-storage.service';
+import { LocalStorageItem } from './shared/type/local-storage-item.type';
 
 export const LOCATIONS : string = "locations";
 
 @Injectable()
 export class LocationService {
 
-  locations : string[] = [];
+  private locations = signal<string[]>([]);
 
-  constructor(private weatherService : WeatherService) {
-    let locString = localStorage.getItem(LOCATIONS);
-    if (locString)
-      this.locations = JSON.parse(locString);
-    for (let loc of this.locations)
-      this.weatherService.addCurrentConditions(loc);
+  constructor(
+    private localStorageService: LocalStorageService,
+  ) {
+    const locations = this.localStorageService.getFromLocalStorage<LocalStorageItem<string>[]>('locations')
+    if (locations){
+      locations.forEach(loc => this.addLocation(loc.data));
+    }
+    }
+
+  getLocations(): Signal<string[]> {
+    return this.locations.asReadonly();
   }
 
   addLocation(zipcode : string) {
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode);
+    if(this.locations().includes(zipcode)){return}
+    this.locations.update(locations => [...locations, zipcode]);
+    this.localStorageService.saveToLocalStorage<string>('locations', {data: zipcode, id: zipcode, timestamp: new Date().getTime()})
   }
 
   removeLocation(zipcode : string) {
-    let index = this.locations.indexOf(zipcode);
+    const locs = this.locations();
+    let index = locs.indexOf(zipcode);
     if (index !== -1){
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+      locs.splice(index, 1);
+      this.locations.update(locations => locs);
+      this.localStorageService.removeFromLocalStorage('locations', zipcode);
     }
   }
 }

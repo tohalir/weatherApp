@@ -1,0 +1,25 @@
+.tab{
+    &__tabs{
+        display: flex;
+        gap: .2rem;
+        flex-wrap: wrap;
+    }
+    &__tab{
+        padding: .5rem 1rem;
+        background-color: #337ab7;
+        color: #fff;
+        cursor: pointer;
+
+        &-button{
+            border: none;
+            background-color: inherit;
+        }
+        &--active{
+            background-color: lighten(#337ab7, 5%);
+        }
+        
+    }
+    &__content{
+        border: 1px solid black;
+    }
+}

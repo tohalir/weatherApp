@@ -1,0 +1,16 @@
+.flex{
+    display: flex;
+    justify-content: space-between;
+}
+:host{
+    padding: 2rem;
+}
+.well{
+    margin: 0 2rem;
+}
+.current-condition-tab{
+    &__container{
+        display: flex;
+        align-items: center;
+    }
+}
